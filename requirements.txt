@@ -1,0 +1,6 @@
+streamlit
+ipykernel
+pandas
+ollama
+openai
+pyperclip
