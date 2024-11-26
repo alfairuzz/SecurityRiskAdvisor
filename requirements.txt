@@ -4,3 +4,4 @@ pandas
 ollama
 openai
 pyperclip
+openpyxl
