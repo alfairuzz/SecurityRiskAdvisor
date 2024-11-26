@@ -167,5 +167,5 @@ if "function_ran" in st.session_state and st.session_state.function_ran:
    
    
 else:
-    st.warning("This page is locked. Run the required function on the main page to unlock it.")
+    st.warning("🔒 This page is currently locked. Run the risk assessment to enable this page!")
     
