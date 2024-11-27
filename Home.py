@@ -93,70 +93,70 @@ if asset_inventory:
 # Display the button only after at least one file is uploaded
 
 if selected_sub_system != "-":
-    if architecture_diagram and asset_inventory:  # Check if any file is uploaded
+    # if architecture_diagram and asset_inventory:  # Check if any file is uploaded
         
-        save_architecture_image(architecture_diagram)
+    save_architecture_image(architecture_diagram)
+    
+    analyse_btn = st.button("Perform Risk Assessment")
+    progress_bar = st.sidebar.empty()
+    status_text = st.sidebar.empty()
+    message_text = st.sidebar.empty()
+
+    # Initialize session state
+    if "function_ran" not in st.session_state:
+        st.session_state.function_ran = False
+
+    
+    if analyse_btn:
         
-        analyse_btn = st.button("Perform Risk Assessment")
-        progress_bar = st.sidebar.empty()
-        status_text = st.sidebar.empty()
-        message_text = st.sidebar.empty()
-
-        # Initialize session state
-        if "function_ran" not in st.session_state:
-            st.session_state.function_ran = False
-
+        system_name = selected_sub_system
         
-        if analyse_btn and architecture_diagram is not None:
+        data = {'System': [system_name]}
+        
+        df = pd.DataFrame(data)
+        
+        df.to_excel("database/selected_system.xlsx", index = None)
+        
+        with st.status("Performing risk assessment...", expanded=True) as status:
             
-            system_name = selected_sub_system
+            # Initiate the progress bar and placeholder for percentage
+            progress_bar.progress(0)
             
-            data = {'System': [system_name]}
+            # Stages and their messages
+            stages = [
+                ("• Step 1: Validating user inputs ...", 10, 2),
+                ("• Step 2: Extracting sub-system information from DGP ...", 10, 1),
+                ("• Step 3: Analysing architecture diagram ...", 10, 3),
+                ("• Step 4: Analysing asset inventory ...", 10, 3),
+                ("• Step 5: Searching web for vulnerabilities ...", 10, 2),
+                ("• Step 6: Generating relevant risk scenarios ...", 10, 4),
+                ("• Step 7: Retrieving current controls from SSP ...", 10, 1),
+                ("• Step 8: Calculating inherent risks ...", 10, 3),
+                ("• Step 9: Recommending mitigating controls ...", 10, 2),
+                ("• Step 10: Calculating residual risks ...", 5, 4),
+                ("• Step 11: Preparing risk assessment report ...", 5, 4),
+            ]
             
-            df = pd.DataFrame(data)
+            # Iterate through stages and update progress bar and percentage
+            current_progress = 0
+            for stage, progress, timer_sleep in stages:
+                st.text(stage)  # Display the stage message
+                time.sleep(timer_sleep)  # Simulate time taken for the stage
+                current_progress += progress  # Increment progress
+                progress_bar.progress(current_progress)  # Update progress bar
+                status_text.text(f"{current_progress}% Complete")  # Update percentage
             
-            df.to_excel("database/selected_system.xlsx", index = None)
-            
-            with st.status("Performing risk assessment...", expanded=True) as status:
-                
-                # Initiate the progress bar and placeholder for percentage
-                progress_bar.progress(0)
-                
-                # Stages and their messages
-                stages = [
-                    ("• Step 1: Validating user inputs ...", 10, 2),
-                    ("• Step 2: Extracting sub-system information from DGP ...", 10, 1),
-                    ("• Step 3: Analysing architecture diagram ...", 10, 3),
-                    ("• Step 4: Analysing asset inventory ...", 10, 3),
-                    ("• Step 5: Searching web for vulnerabilities ...", 10, 2),
-                    ("• Step 6: Generating relevant risk scenarios ...", 10, 4),
-                    ("• Step 7: Retrieving current controls from SSP ...", 10, 1),
-                    ("• Step 8: Calculating inherent risks ...", 10, 3),
-                    ("• Step 9: Recommending mitigating controls ...", 10, 2),
-                    ("• Step 10: Calculating residual risks ...", 5, 4),
-                    ("• Step 11: Preparing risk assessment report ...", 5, 4),
-                ]
-                
-                # Iterate through stages and update progress bar and percentage
-                current_progress = 0
-                for stage, progress, timer_sleep in stages:
-                    st.text(stage)  # Display the stage message
-                    time.sleep(timer_sleep)  # Simulate time taken for the stage
-                    current_progress += progress  # Increment progress
-                    progress_bar.progress(current_progress)  # Update progress bar
-                    status_text.text(f"{current_progress}% Complete")  # Update percentage
-                
-                progress_bar.empty()  # Clear progress bar after completion
-                status_text.empty()  # Clear percentage after completion
+            progress_bar.empty()  # Clear progress bar after completion
+            status_text.empty()  # Clear percentage after completion
 
-            status.update(label="Risk assessment complete!", state="complete", expanded=False)
+        status.update(label="Risk assessment complete!", state="complete", expanded=False)
+        
+        st.success("Navigate to the **Chatbot** or **Architecture Review* page to interact with the output.", icon="✅")
+        
+        st.session_state.function_ran = True
             
-            st.success("Navigate to the **Chatbot** or **Architecture Review* page to interact with the output.", icon="✅")
-            
-            st.session_state.function_ran = True
-            
-    else:
-        st.info("Please upload all the required documents to initiate the risk assessment.")
+    # else:
+    #     st.info("Please upload all the required documents to initiate the risk assessment.")
 else:
     st.info("ℹ️ Please select a system.")
 
