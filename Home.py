@@ -95,7 +95,7 @@ if asset_inventory:
 if selected_sub_system != "-":
     # if architecture_diagram and asset_inventory:  # Check if any file is uploaded
         
-    save_architecture_image(architecture_diagram)
+    #save_architecture_image(architecture_diagram)
     
     analyse_btn = st.button("Perform Risk Assessment")
     progress_bar = st.sidebar.empty()
