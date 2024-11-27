@@ -12,7 +12,7 @@ from src.save_image import save_architecture_image
 system_details_a = """System A is a HR system that keep track of staff movement contain employee data. The system is fully outsource and maintain onsite in the agency data centre."""
 system_details_b = """System B is a cloud system that keep track of citizen's CPF. It has an mobile application that allows citizen to check their CPF. This is fully insource and maintain by GT staff."""
 
-st.title("🤖 Security Risk Advisor")
+st.title("🤖 System Risk Advisor")
 st.write("Start by uploading the necessary documents below.")
 
 
